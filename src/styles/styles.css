@@ -1,0 +1,412 @@
+/* ======================================================= */
+/* 1. Base Styles (Berlaku untuk semua ukuran, Mobile-First) */
+/* ======================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-image: url(../public/images/maps-background.jpg);
+  /* Opsional: perbaikan background agar lebih responsif */
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.container {
+  padding-inline: 1rem; /* Padding untuk mobile */
+  margin-inline: auto;
+  max-width: 1300px;
+}
+
+/* HEADER & NAVIGASI (Mobile-First) */
+header {
+  background-color: #986602;
+}
+
+.main-header {
+  min-height: 90px;
+  padding-block: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.brand-name {
+  font-size: 1.5rem; /* Sedikit lebih kecil di mobile */
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+/* Navigasi Drawer (Mobile) */
+.navigation-drawer {
+  min-height: 100vh;
+  width: 200px;
+  padding: 20px 10px;
+  background-color: #fff;
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  box-shadow: 0 0 4px 2px #00000033;
+  transform: translateX(-100%);
+  transition: transform 350ms;
+  z-index: 9999;
+}
+
+.navigation-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-button {
+  padding: 8px;
+  border: 0;
+  border-radius: 4px;
+  display: inline-block;
+  background-color: transparent;
+  font-weight: bold;
+  font-size: 28px;
+  color: #14161e;
+  cursor: pointer;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column; /* Vertikal di mobile */
+  gap: 10px 20px;
+}
+
+.nav-list li a {
+  padding: 6px 10px;
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+
+.nav-list li a:hover {
+  text-decoration: underline;
+}
+
+/* KONTEN UTAMA (Mobile-First) */
+.main-content {
+  padding-block: 20px;
+}
+
+/* Peta (Mobile-First) */
+#story-map,
+.stories-list__map {
+  width: 100%;
+  height: 300px; /* Tinggi peta di mobile */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stories-list__map__container {
+  position: relative;
+  width: 100%;
+}
+
+/* Daftar Cerita (Mobile-First) */
+.story-list,
+.stories-list {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 kolom di mobile */
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.stories-list__container {
+  position: relative;
+  padding-top: 1rem;
+  min-height: 300px;
+}
+
+.story-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.story-item:hover {
+  transform: translateY(-5px);
+}
+
+.story-image {
+  width: 100%;
+  height: 200px; /* Ini sudah benar */
+  object-fit: cover; /* Ini sudah benar */
+}
+
+.story-info {
+  padding: 1rem;
+}
+.story-name {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+.story-date {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+.story-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Form (Mobile-First) */
+#add-story-form,
+.auth-form {
+  max-width: 600px;
+  margin: 1rem auto;
+  padding: 1rem 0.5rem; /* Padding kecil di mobile */
+  border: none; /* Hilangkan border di mobile */
+  box-shadow: none; /* Hilangkan bayangan di mobile */
+  background-color: #986602;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.form-group input[type="file"],
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+#add-story-map {
+  width: 100%;
+  height: 300px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.button-submit {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.button-submit:hover {
+  background-color: #555;
+}
+
+/* Form Login/Register */
+.auth-form {
+  background-color: transparent; /* Login/Register mungkin tidak perlu background */
+}
+
+.auth-switch {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #555;
+}
+.auth-switch a {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+.auth-form h1, /* Diubah ke h1 */
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* .add-story-form h2 { (sudah tercakup oleh #add-story-form) */
+#add-story-form h1,
+#add-story-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Notifikasi (Mobile-First) */
+#notification-container {
+  width: auto;
+  left: 10px;
+  right: 10px;
+  /* (CSS untuk .toast, .toast.show, dll. Anda) */
+}
+
+/* Loader (Sudah responsif) */
+.stories-list__empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: 2rem;
+}
+.loader-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+}
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #333;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ======================================================= */
+/* 2. Media Queries (Tablet dan Layar Lebih Besar) */
+/* ======================================================= */
+
+/* (A) Tampilan Tablet (Mulai dari 768px) */
+@media screen and (min-width: 768px) {
+  .container {
+    padding-inline: 32px; /* Kembalikan padding desktop */
+  }
+
+  .brand-name {
+    font-size: 2rem; /* Kembalikan ukuran font desktop */
+  }
+
+  /* Buat grid cerita menjadi 2 kolom */
+  .story-list,
+  .stories-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  /* Kembalikan style form di tablet */
+  #add-story-form,
+  .auth-form {
+    padding: 1.5rem 2rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Kembalikan background form add-story */
+  #add-story-form {
+    background-color: #986602;
+  }
+}
+
+/* (B) Tampilan Desktop (Mulai dari 1000px) */
+@media screen and (min-width: 1000px) {
+  /* Ubah navigasi menjadi horizontal di desktop */
+  .navigation-drawer {
+    min-height: auto;
+    width: auto;
+    padding: 0;
+    background-color: transparent;
+    flex-direction: row;
+    justify-content: space-between;
+    position: static;
+    box-shadow: none;
+    transform: translateX(0);
+  }
+
+  .nav-list {
+    flex-direction: row;
+  }
+
+  .nav-list li a {
+    display: inline-block;
+  }
+
+  .drawer-button {
+    display: none; /* Sembunyikan tombol hamburger */
+  }
+
+  /* Ubah grid cerita menjadi 3+ kolom di desktop */
+  .story-list,
+  .stories-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  /* Perbesar peta di desktop */
+  #story-map,
+  .stories-list__map {
+    height: 400px;
+  }
+}
+
+/* ======================================================= */
+/* Style untuk Modal Kamera */
+/* ======================================================= */
+
+.camera-container {
+  display: none; /* Sembunyi secara default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9998; /* Di bawah drawer tapi di atas konten */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Sembunyikan/tampilkan container */
+.camera-container.show {
+  display: flex;
+}
+.camera-container.hide {
+  display: none;
+}
+
+#video-preview {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+#capture-button,
+#close-camera-button {
+  width: 100%;
+  max-width: 600px;
+}
