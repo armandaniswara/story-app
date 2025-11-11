@@ -2,6 +2,7 @@
 
 import L from "leaflet";
 import { storeNewStory } from "../../data/api";
+import { StoryDbOutbox } from "../../utils/db-helper";
 
 export default class AddStoryPage {
   // Properti untuk menyimpan stream dan file
@@ -138,19 +139,19 @@ export default class AddStoryPage {
       submitButton.innerText = "Mengupload...";
 
       try {
+        // (1) Kumpulkan data (tetap sama)
+        const imageInput = document.querySelector("#story-image");
         const descriptionInput = document.querySelector("#story-description");
         const latInput = document.querySelector("#story-lat");
         const lonInput = document.querySelector("#story-lon");
 
-        // (MODIFIKASI) Cek file dari kamera ATAU dari input
         const evidenceImages = [];
         if (this.#capturedImageFile) {
           evidenceImages.push(this.#capturedImageFile);
-        } else if (fileInputElement.files[0]) {
-          evidenceImages.push(fileInputElement.files[0]);
+        } else if (imageInput.files[0]) {
+          evidenceImages.push(imageInput.files[0]);
         }
 
-        // Validasi
         if (evidenceImages.length === 0)
           throw new Error("Gambar wajib diisi (dari file atau kamera).");
         if (!descriptionInput.value) throw new Error("Deskripsi wajib diisi.");
@@ -159,29 +160,65 @@ export default class AddStoryPage {
 
         const storyData = {
           description: descriptionInput.value,
-          evidenceImages: evidenceImages,
+          evidenceImages: evidenceImages, // Ini adalah array berisi File/Blob
           lat: parseFloat(latInput.value),
           lon: parseFloat(lonInput.value),
         };
 
+        // (2) Coba kirim ke API
         const response = await storeNewStory(storyData);
 
-        if (!response.ok) throw new Error(response.message);
+        if (!response.ok) {
+          // Jika API gagal (bisa jadi validasi, atau offline), lempar error
+          throw new Error(response.message || "Gagal mengirim ke API");
+        }
 
+        // (3) Jika SUKSES (Online)
         this._showNotification("Cerita berhasil di-upload!", "success");
+      } catch (error) {
+        // (4) Jika GAGAL (Kemungkinan Offline)
+        this._showNotification(
+          `Gagal upload: ${error.message}. Menyimpan ke Outbox...`,
+          "error"
+        );
+
+        // Ambil data lagi (karena 'storyData' di 'try' block)
+        // (Maaf, kita definisikan ulang 'storyData' di sini agar bisa diakses 'catch')
+        const storyDataForOutbox = {
+          description: document.querySelector("#story-description").value,
+          evidenceImages: this.#capturedImageFile
+            ? [this.#capturedImageFile]
+            : [document.querySelector("#story-image").files[0]],
+          lat: parseFloat(document.querySelector("#story-lat").value),
+          lon: parseFloat(document.querySelector("#story-lon").value),
+        };
+
+        try {
+          // (5) Simpan ke IndexedDB Outbox
+          await StoryDbOutbox.addStory(storyDataForOutbox);
+          this._showNotification(
+            "Cerita disimpan di Outbox. Akan di-sync saat Anda kembali online.",
+            "success"
+          );
+        } catch (dbError) {
+          this._showNotification(
+            `Gagal menyimpan ke Outbox: ${dbError.message}`,
+            "error"
+          );
+        }
+      } finally {
+        // (6) Reset form (baik sukses maupun gagal)
+        submitButton.disabled = false;
+        submitButton.innerText = originalButtonText;
         form.reset();
-        this.#capturedImageFile = null; // Reset file
-        imagePreviewContainer.style.display = "none"; // Sembunyikan preview
+        this.#capturedImageFile = null;
+        imagePreviewContainer.style.display = "none";
         if (marker) map.removeLayer(marker);
 
+        // Arahkan ke Beranda setelah sukses (baik online maupun offline)
         setTimeout(() => {
           window.location.hash = "#/";
         }, 2000);
-      } catch (error) {
-        this._showNotification(error.message, "error");
-      } finally {
-        submitButton.disabled = false;
-        submitButton.innerText = originalButtonText;
       }
     });
   }

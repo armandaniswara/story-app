@@ -127,6 +127,7 @@ header {
 }
 
 .story-item {
+  position: relative;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -172,6 +173,66 @@ header {
   border: none; /* Hilangkan border di mobile */
   box-shadow: none; /* Hilangkan bayangan di mobile */
   background-color: #986602;
+}
+/* 2. Style untuk tombol hati (Favorite & Unfavorite) */
+.favorite-button,
+.unfavorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  
+  background-color: rgba(255, 255, 255, 0.9); /* Latar belakang semi-transparan */
+  border: none;
+  border-radius: 50%; /* Membuatnya bundar */
+  width: 44px;
+  height: 44px;
+  
+  /* Memposisikan ikon di tengah tombol */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  cursor: pointer;
+  font-size: 1.3rem; /* Ukuran ikon hati */
+  transition: transform 0.2s ease;
+}
+
+.favorite-button:hover,
+.unfavorite-button:hover {
+  transform: scale(1.1); /* Efek zoom saat di-hover */
+}
+
+/* Tombol 'Suka' (Outline) */
+.favorite-button {
+  color: #333; /* Warna ikon outline (abu-abu tua) */
+}
+.favorite-button:hover {
+  color: #dc3545; /* Merah saat di-hover */
+}
+
+/* Tombol 'Batal Suka' (Solid) */
+.unfavorite-button {
+  color: #dc3545; /* Warna ikon solid (merah) */
+}
+
+/* Style untuk input pencarian di halaman Favorit */
+#search-favorite {
+  /* Anda mungkin sudah memiliki style untuk .form-control atau 
+    .form-group input[type="text"]. 
+    CSS ini untuk memastikan style-nya diterapkan.
+  */
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* (Opsional) Beri jarak pada labelnya */
+.form-group label[for="search-favorite"] {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .form-group {
