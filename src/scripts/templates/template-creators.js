@@ -1,21 +1,6 @@
 // src/scripts/templates/template-creators.js
 
 /**
- * Menghasilkan template untuk satu item cerita di daftar.
- * (Diambil dari kode home-page.js Anda sebelumnya)
- */
-export const generateStoriesItemTemplate = (story) => `
-  <article class="story-item">
-    <img src="${story.photoUrl}" alt="Foto cerita oleh ${story.name}" class="story-image">
-    <div class="story-info">
-      <h3 class="story-name">${story.name}</h3>
-      <p class="story-date">Dibuat: ${new Date(story.createdAt).toLocaleDateString()}</p>
-      <p class="story-description">${story.description.substring(0, 100)}...</p>
-    </div>
-  </article>
-`;
-
-/**
  * Template untuk pesan error
  */
 export const generateStoriesListErrorTemplate = (message) => `
@@ -42,4 +27,34 @@ export const generateLoaderAbsoluteTemplate = () => `
   <div class="loader-container">
     <div class="loader"></div>
   </div>
+`;
+
+
+/**
+ * Template untuk favorit 
+ */
+export const generateStoriesItemTemplate = (story) => `
+  <article class="story-item">
+    <img src="${story.photoUrl}" alt="Foto cerita oleh ${story.name}" class="story-image">
+    <div class="story-info">
+      <h3 class="story-name">${story.name}</h3>
+      <p class="story-date">Dibuat: ${new Date(story.createdAt).toLocaleDateString()}</p>
+      <p class="story-description">${story.description.substring(0, 100)}...</p>
+    </div>
+    
+    <button 
+      class="favorite-button" 
+      data-id="${story.id}" 
+      aria-label="Tambahkan ke favorit"
+    >
+      <i class="fa-regular fa-heart"></i> </button>
+
+    <button 
+      class="unfavorite-button" 
+      data-id="${story.id}" 
+      aria-label="Hapus dari favorit"
+      style="display: none; color: red;"
+    >
+      <i class="fa-solid fa-heart"></i> </button>
+  </article>
 `;

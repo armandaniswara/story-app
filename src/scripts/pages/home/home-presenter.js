@@ -1,5 +1,5 @@
 // src/scripts/pages/home/home-presenter.js
-import { StoryDb } from '../../utils/db-helper';
+import { StoryDbCache } from "../../utils/db-helper";
 /**
  * HomePresenter
  * Mengatur logika untuk halaman utama (View) dan API (Model)
@@ -33,25 +33,26 @@ export default class HomePresenter {
       // 3. Tampilkan data ke View
       const stories = response.listStory || [];
 
-      await StoryDb.clearStories(); 
-      await StoryDb.putAllStories(stories); 
+      await StoryDbCache.clearStories();
+      await StoryDbCache.putAllStories(stories);
 
       this.#view.populateStoriesList(response.message, stories);
-
     } catch (error) {
+      console.warn(
+        "API Gagal, mencoba mengambil dari IndexedDB:",
+        error.message
+      );
 
-      console.warn('API Gagal, mencoba mengambil dari IndexedDB:', error.message);
-      
       // 4. Tampilkan error jika gagal
-      const stories = await StoryDb.getAllStories();
-      
+      const stories = await StoryDbCache.getAllStories();
+
       if (stories && stories.length > 0) {
-        this.#view.populateStoriesList('Data dimuat offline.', stories);
+        this.#view.populateStoriesList("Data dimuat offline.", stories);
       } else {
-      this.#view.populateStoriesListError(error.message);
+        // Gagal total (offline dan DB kosong)
+        this.#view.populateStoriesListError(error.message);
       }
     } finally {
-      // 5. Sembunyikan loading
       this.#view.hideLoading();
       this.#view.hideMapLoading();
     }

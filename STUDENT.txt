@@ -1,2 +1,4 @@
-APP_URL=<url_aplikasi>
+APP_URL=<https://whimsical-alpaca-9a6231.netlify.app/>
 MAP_SERVICE_API_KEY=<api_key>
+
+https://whimsical-alpaca-9a6231.netlify.app/

@@ -56,7 +56,7 @@ class App {
     if (isUserLoggedIn()) {
       this.#navList.innerHTML += `
         <li class="auth-link"><a href="#/add-story">Tambah Cerita</a></li>
-        <li class="auth-link"><a href="#/notifications">Notifikasi</a></li>
+        <li class="auth-link"><a href="#/favorites">Favorit</a></li> <li class="auth-link"><a href="#/notifications">Notifikasi</a></li>
         <li class="auth-link"><a href="#" id="logout-button">Logout</a></li>
       `;
 
